@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {getAllPets} from "../services/main/pets.js";
 import PetDetails from "./petDetail.jsx";
 
-export default function PetsList({setPetForm}) {
+export default function PetsList({details, setId}) {
     const [petList, setPetList] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [hasError, setHasError] = useState(false)
@@ -28,24 +28,32 @@ export default function PetsList({setPetForm}) {
     }, [])
 
     let filteredPetList = petList
-    function handleSearchInput(e){
-        filteredPetList = petList.filter((pet)=>pet.name.contains(e.target.value))
+
+    function handleSearchInput(e) {
+        filteredPetList = petList.filter((pet) => pet.name.contains(e.target.value))
         return filteredPetList
+    }
+
+    function handlePetClick(id){
+        setId(id)
+        details()
     }
 
     return (
         <>
-            <input type="search" onChange={(e)=>handleSearchInput(e)}/>
+            <input type="search" onChange={(e) => handleSearchInput(e)}/>
             {isLoading && <h6>Loading...</h6>}
             {hasError && <h6>Something went wrong. Try again later.</h6>}
             <ul>
-                {filteredPetList.map((pet,index) => {
+                {filteredPetList.map((pet) => {
                     const {id, name, breed, dateOfBirth} = pet
-                    return <li key={index} onClick={()=>PetDetails(id)}>
-                        <p>Name: {name}</p>
-                        <p>Breed: {breed}</p>
-                        <p>Date Of Birth: {dateOfBirth}</p>
-                    </li>
+                    return (
+                        <li key={id} onClick={() => handlePetClick(id)}>
+                            <p>Name: {name}</p>
+                            <p>Breed: {breed}</p>
+                            <p>Date Of Birth: {dateOfBirth}</p>
+                        </li>
+                    )
                 })}
             </ul>
         </>

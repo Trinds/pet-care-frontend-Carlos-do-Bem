@@ -10,6 +10,7 @@ function App() {
     const [showForm, setShowForm] = useState(false)
     const [showList, setShowList] = useState(true)
     const [showDetail, setShowDetail] = useState(false)
+    const [petId, setPetId] = useState(null)
 
     function showFormComponent() {
         if (!showForm) {
@@ -39,9 +40,9 @@ function App() {
         <>
             <h1>Pet Care - Carlos do Bem</h1>
             <button onClick={() => showFormComponent()}>Create Pet</button>
-            {showList && <PetsList setPetForm={setPetsForm}/>}
+            {showList && <PetsList details={showDetailComponent} setId={setPetId}/>}
             {showForm && <PetsForm pet={petsForm} onPetSubmit={setPetsForm} backToList={showListComponent}/>}
-            {showDetail && <PetDetails/>}
+            {showDetail && <PetDetails id={petId} backToList={showListComponent}/>}
         </>
     )
 }
